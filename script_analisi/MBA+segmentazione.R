@@ -91,7 +91,7 @@ itemFrequency(basket_trans)
 sort(itemFrequency(basket_trans),decreasing=T)
 itemFrequencyPlot(basket_trans,support=.1)
 
-
+set.seed(1234)
 musicrules <- apriori(basket_trans,parameter=list(support=.1,confidence=.7)) 
 ##0.1 supporto voglio che le regole compaiano almeno nel 10% del dataset
 #(noi abbiamo 90 ass, vogliamo che la regola compaia almeno 9 volte)
@@ -117,88 +117,6 @@ plot(musicrules, method = "graph")
 boxplot(dati$y)
 boxplot(dati$dimensione_cm)
 
-#Nei modelli piccoli senza illuminazione interna prevale fortemente la configurazione a due cassetti. (vedi 15 e 16 e 20)
-table(dati$type)
-library(ggplot2)
-
-ggplot(dati, aes(x = type)) +
-  geom_bar(fill = "#9EC5E6", color = "grey20") +
-  geom_text(
-    stat = "count",
-    aes(label = after_stat(count)),
-    vjust = -0.5,
-    size = 5,           
-    fontface = "bold"   
-  ) +
-  labs(x = "Tipo", y = "Frequenza") +
-  theme_minimal(base_size = 13) +
-  theme(
-    axis.text.y = element_text(color = "grey70"),  
-    axis.title.y = element_text(color = "grey60"),
-    panel.grid.major.x = element_blank()
-  )
-
-
-
-table(dati$dimensione_cm)
-ggplot(dati, aes(x = dimensione_cm)) +
-  geom_bar(fill = "#9EC5E6", color = "grey20") +
-  geom_text(
-    stat = "count",
-    aes(label = after_stat(count)),
-    vjust = -0.5,
-    size = 5,           
-    fontface = "bold"   
-  ) +
-  labs(x = "Dimensione (cm)", y = "Frequenza") +
-  theme_minimal(base_size = 13) +
-  theme(
-    axis.text.y = element_text(color = "grey70"),  
-    axis.title.y = element_text(color = "grey60"),
-    panel.grid.major.x = element_blank()
-  )
-
-
-
-
-prop.table(table(dati$numero_cassetti))
-ggplot(dati, aes(x = numero_cassetti)) +
-  geom_bar(fill = "#9EC5E6", color = "grey20") +
-  geom_text(
-    stat = "count",
-    aes(label = after_stat(count)),
-    vjust = -0.5,
-    size = 5,           
-    fontface = "bold"   
-  ) +
-  labs(x = "Numero cassetti", y = "Frequenza") +
-  theme_minimal(base_size = 13) +
-  theme(
-    axis.text.y = element_text(color = "grey70"),  
-    axis.title.y = element_text(color = "grey60"),
-    panel.grid.major.x = element_blank()
-  )
-
-
-
-
-
-ggplot(dati, aes(x = y)) +
-  geom_bar(fill = "#9EC5E6", color = "grey20") +
-  geom_text(
-    stat = "count",
-    aes(label = after_stat(count)),
-    vjust = -0.5,
-    size = 5,           
-    fontface = "bold"   
-  ) +
-  labs(x = "Y", y = "Frequenza") +
-  theme_minimal(base_size = 13) +
-  theme(
-    axis.text.y = element_text(color = "grey70"),  
-    axis.title.y = element_text(color = "grey60"),
-    panel.grid.major.x = element_blank()
-  )
 
 
 ######SEGMENTAZIONE DEL MERCATO
@@ -227,7 +145,9 @@ dati$type = as.factor(dati$type)
 dati$illuminazione = as.factor(dati$illuminazione)
 dati$dimensione_cm=as.factor(dati$dimensione_cm)
 dati$numero_cassetti=as.factor(dati$numero_cassetti)
+library(cluster)
 
+set.seed(1234)
 d <- daisy(dati, metric = "gower")
 
 hc <- hclust(d, method = "complete")
@@ -246,16 +166,15 @@ rect.hclust(hc, k = 3, border = "red")
 #1 cluster= -0.07 sotto la media, 0.03 quasi neutro
 #2 cluster= 0.14 sopra la media, -0.07 sotto la media
 lapply(dati[, sapply(dati, is.factor)], function(x)
-  prop.table(table(c2, x), 1)
+  prop.table(table(c3, x), 1)
 )##per ogni cluster c'è la percentuale della categoria
 
 dat_cl2 <- model.matrix(~ . - 1, data = dati)
-
+library(flexclust)
 set.seed(1234)
 MD.km28 <- stepFlexclust(dat_cl2, k = 2:5)
 plot(MD.km28, xlab = "number of segments")
-MD.k2 <- MD.km28[["2"]]
-barchart(MD.k2)
+
 
 MD.k2 <- MD.km28[["3"]]
 barchart(MD.k2)
@@ -275,3 +194,5 @@ resultati <- lapply(vars_factor, function(v){
 dim(dati)
 
 names(resultati) <- vars_factor
+
+
