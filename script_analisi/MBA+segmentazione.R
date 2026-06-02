@@ -134,7 +134,7 @@ table(dati$RISPOSTA)
 table(dati$dimensione_cm)
 table(dati$numero_cassetti)
 dati$`DAY-Time`=NULL
-dati$RISPOSTA = as.factor(dati$RISPOSTA)
+dati$RISPOSTA=NULL
 table(dati$colore)
 dati$colore = as.factor(dati$colore)
 dati$lavabo = as.factor(dati$lavabo)
