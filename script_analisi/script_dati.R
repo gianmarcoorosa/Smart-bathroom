@@ -291,7 +291,7 @@ errori_xgb <- numeric(38)
 
 for (i in 1:38) {
   
-  t_pred <- 79 + i
+  t_pred <- 80 + i      # cambiato da 79+i
   train <- dati_lm[dati_lm$tempo <= t_pred, ]
   test  <- dati_lm[dati_lm$tempo == t_pred + 2, ]
   
@@ -320,13 +320,13 @@ mse_xgb
 
 errori_prophet = numeric(38)
 for(i in 1:38) {
-  n_train = 80 + i - 1
+  n_train = 80 + i 
   train_data = data.frame(
     ds = 1:n_train, 
     y = df$grigio_80[1:n_train]
   )
   
-  model = prophet(train_data, yearly.seasonality = FALSE, weekly.seasonality = FALSE)
+  model = prophet(train_data, yearly.seasonality = "auto", weekly.seasonality = FALSE)
   
   future = data.frame(ds = (n_train + 1):(n_train + 2))
   forecast = predict(model, future)
