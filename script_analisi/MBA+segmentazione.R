@@ -192,5 +192,6 @@ resultati <- lapply(vars_factor, function(v){
 dim(dati)
 
 names(resultati) <- vars_factor
+risultati
 
 
