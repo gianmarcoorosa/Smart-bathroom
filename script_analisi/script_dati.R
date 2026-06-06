@@ -338,9 +338,45 @@ print(mse_prophet)
 
 
 
+######## prophet
+data_inizio <- as.Date("2010-01-01")
+df$ds <- seq.Date(
+  from = data_inizio,
+  by = "month",
+  length.out = nrow(df)
+)
+errori_prophet <- numeric(38)
 
+for(i in 1:38) {
+  n_train <- 80 + i
+  train_data <- data.frame(
+    ds = df$ds[1:n_train],
+    y  = df$grigio_80[1:n_train]
+  )
+  train_data$agosto <- ifelse(format(train_data$ds, "%m") == "08", 1, 0)
+  
+  model <- prophet(
+    yearly.seasonality = TRUE,
+    weekly.seasonality = FALSE,
+    daily.seasonality = FALSE,
+    seasonality.mode = "additive"
+  )
+  
+  model <- add_regressor(model, "agosto")
+  model <- fit.prophet(model, train_data)
+  
+  future <- data.frame(
+    ds = df$ds[(n_train + 1):(n_train + 2)]
+  )
+  
+  future$agosto <- ifelse(format(future$ds, "%m") == "08", 1, 0)
+  forecast <- predict(model, future)
+  errori_prophet[i] <- tail(forecast$yhat, 1) - df$grigio_80[n_train + 2]
+}
 
+mse_prophet <- mean(errori_prophet^2)
 
+print(mse_prophet)
 
 
 ###### prova con altra serie
