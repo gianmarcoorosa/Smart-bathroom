@@ -186,12 +186,12 @@ cluster_table <- function(var, cluster){
 }
 vars_factor <- names(dati)[sapply(dati, is.factor)]
 
-resultati <- lapply(vars_factor, function(v){
+risultati <- lapply(vars_factor, function(v){
   cluster_table(dati[[v]], clusters(MD.k2))
 })
 dim(dati)
 
-names(resultati) <- vars_factor
+names(risultati) <- vars_factor
 risultati
 
 
