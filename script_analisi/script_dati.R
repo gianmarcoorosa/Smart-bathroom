@@ -1,3 +1,15 @@
+############
+# Questo script contine il codice per 
+# 1) plot veloce dei dati
+# 2) clustering basato sui coefficienti di bass e GBM
+# 3) clustering basato su coefficienti splines di regressione
+# 4) clustering veloce fda (meglio Giorgia)
+# 5) Confronto tramite expanding windows modelli in previsione
+
+
+
+
+
 rm(list=ls())
 gc()
 library(readxl)
@@ -76,6 +88,7 @@ p3 <- grafico_base + geom_line(data = subset(dd_long, Gruppo %in% c("1. Prime 4"
 print(p3)
 p4 <- grafico_base + geom_line(data = dd_long, linewidth = 0.8) # Mette tutto
 print(p4)
+
 
 
 ################### CLUSTERING BASATO SUI COEFFICIENTI DI BASS
@@ -318,27 +331,14 @@ mse_xgb
 
 
 
-errori_prophet = numeric(38)
-for(i in 1:38) {
-  n_train = 80 + i 
-  train_data = data.frame(
-    ds = 1:n_train, 
-    y = df$grigio_80[1:n_train]
-  )
-  
-  model = prophet(train_data, yearly.seasonality = "auto", weekly.seasonality = FALSE)
-  
-  future = data.frame(ds = (n_train + 1):(n_train + 2))
-  forecast = predict(model, future)
-  errori_prophet[i] = tail(forecast$yhat, 1) - df$grigio_80[82 + i]
-}
 
-mse_prophet = mean(errori_prophet^2)
-print(mse_prophet)
 
 
 
 ######## prophet
+# leggero tuning su n.changepoints (5, 10, 15, 20, 25) ma senza grossi risultati;
+# non ho usato trend logistico perchè
+# quello lineare mi sembra sensato
 data_inizio <- as.Date("2010-01-01")
 df$ds <- seq.Date(
   from = data_inizio,
@@ -359,7 +359,8 @@ for(i in 1:38) {
     yearly.seasonality = TRUE,
     weekly.seasonality = FALSE,
     daily.seasonality = FALSE,
-    seasonality.mode = "additive"
+    seasonality.mode = "additive", 
+    n.changepoints = 15
   )
   
   model <- add_regressor(model, "agosto")
@@ -379,39 +380,49 @@ mse_prophet <- mean(errori_prophet^2)
 print(mse_prophet)
 
 
-###### prova con altra serie
-df=dd
-errori_bass2 <- numeric(40)
 
-for (i in 1:38) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+###### PROVA CON UN ' ALTRA SERIE: mi aspetto sempre circa risultati simili
+errori_bass <- numeric(40)
+
+for (i in 1:40) {
   x_tmp <- df$noce_120[1:(80 + i)]
   bass_tmp <- BM(x_tmp, display = F)
   
   pred_bmtw <- predict(bass_tmp, newx = c(1:(80 + i + 2)))
   pred.insttw<- make.instantaneous(pred_bmtw)
   
-  errori_bass2[i] <- tail(pred.insttw,1) - df$noce_120[82 + i]
+  errori_bass[i] <- tail(pred.insttw,1) - df$bianco_60[82 + i]
 }
 
-mse_bass <- mean(errori_bass2^2)
+mse_bass <- mean(errori_bass[1:38]^2)
 
 
-## approccio tramite rolling windows
-errori_mean2 <- numeric(40)
+## approccio tramite rolling mean
+errori_mean <- numeric(40)
 
 for (i in 1:40) {
   x_tmp <-  df$noce_120[1:(80+i)]
-  pred_mean <- mean( df$noce_120[  (80-12+i):(80+i)] )
-  
-  errori_mean2[i] <- pred_mean - df$noce_120[(80 + i + 2)]
+  pred_mean <- mean( df$noce_120[ (80-12+i):(80+i)] )
+  errori_mean[i] <- pred_mean - df$noce_120[(80 + i + 2)]
   
 }
-
-mse_mean <- mean((errori_mean2[1:38])^2)
+mse_mean <- mean((errori_mean[1:38])^2)
 
 ## approccio tramite regressione lineare disponendo di alcuni ritardi
 errori_lm <- numeric(38)
-
 serie <- df$noce_120
 idx <- 13:120
 
@@ -433,13 +444,10 @@ for (i in 1:38) {
   train <- dati_lm[dati_lm$tempo <= t_pred, ]
   test  <- dati_lm[dati_lm$tempo == t_pred + 2, ]
   
-  modello <- lm(
-    y ~ lag2 + lag3 + lag4 + mean_12 + same_month_last_year,
-    data = train
-  )
+  modello <- lm( y ~ lag2 + lag3 + lag4 + mean_12 + same_month_last_year,
+                 data = train)
   
   predizione <- predict(modello, newdata = test)
-  
   errori_lm[i] <- predizione - test$y
 }
 
@@ -453,60 +461,73 @@ errori_xgb <- numeric(38)
 
 for (i in 1:38) {
   
-  t_pred <- 79 + i
-  
+  t_pred <- 80 + i      
   train <- dati_lm[dati_lm$tempo <= t_pred, ]
   test  <- dati_lm[dati_lm$tempo == t_pred + 2, ]
   
   X_train <- as.matrix(train[, -c(1,2)])
   y_train <- train$y
-  
   X_test <- as.matrix(test[, -c(1,2)])
   
   modello_xgb <- xgboost(
     data = X_train,
     label = y_train,
-    nrounds = 50,
+    nrounds = 10,
     objective = "reg:squarederror",
     verbose = 0, 
-    max_depth = 1,
-    learning_rate = 0.1
+    max_depth = 3,
+    learning_rate = 0.2
   )
   
   predizione <- predict(modello_xgb, X_test)
-  
   errori_xgb[i] <- predizione - test$y
 }
+
 mse_xgb <- mean(errori_xgb^2)
 mse_xgb
 
 
 
 
-
-
-
-
-errori_prophet = numeric(38)
+######## prophet
+data_inizio <- as.Date("2010-01-01")
+df$ds <- seq.Date(
+  from = data_inizio,
+  by = "month",
+  length.out = nrow(df)
+)
+errori_prophet <- numeric(38)
 
 for(i in 1:38) {
-  n_train = 80 + i - 1
+  n_train <- 80 + i
+  train_data <- data.frame(
+    ds = df$ds[1:n_train],
+    y  = df$noce_120[1:n_train]
+  )
+  train_data$agosto <- ifelse(format(train_data$ds, "%m") == "08", 1, 0)
   
-  # Prophet vuole dataframe con ds (anche date fittizie)
-  train_data = data.frame(
-    ds = 1:n_train,  # usa indici come "tempo"
-    y = df$noce_120[1:n_train]
+  model <- prophet(
+    yearly.seasonality = TRUE,
+    weekly.seasonality = FALSE,
+    daily.seasonality = FALSE,
+    seasonality.mode = "additive", 
+    n.changepoints = 10
   )
   
-  model = prophet(train_data, yearly.seasonality = FALSE, weekly.seasonality = FALSE)
+  model <- add_regressor(model, "agosto")
+  model <- fit.prophet(model, train_data)
   
-  future = data.frame(ds = (n_train + 1):(n_train + 2))
-  forecast = predict(model, future)
+  future <- data.frame(
+    ds = df$ds[(n_train + 1):(n_train + 2)]
+  )
   
-  errori_prophet[i] = tail(forecast$yhat, 1) - df$noce_120[82 + i]
+  future$agosto <- ifelse(format(future$ds, "%m") == "08", 1, 0)
+  forecast <- predict(model, future)
+  errori_prophet[i] <- tail(forecast$yhat, 1) - df$noce_120[n_train + 2]
 }
 
-mse_prophet = mean(errori_prophet^2)
+mse_prophet <- mean(errori_prophet^2)
+
 print(mse_prophet)
 
 
@@ -515,76 +536,5 @@ print(mse_prophet)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-risultati_ggm = matrix(NA, nrow = 16, ncol = 5)
-colnames(risultati_ggm) = c("k", "pc", "qc", "ps", "qs")
-
-for(i in 1:16){
-  bm_tmp=BM(dd[, i], display=F)
-  ggm_tmp = GGM(dd[, i], prelimestimates = c(bm_tmp$coefficients[1], 0.001, 0.1, bm_tmp$coefficients[2], bm_tmp$coefficients[3]))
-  
-  # Estrai stime e p-value direttamente dall'oggetto
-  stime = ggm_tmp$Estimate$Estimate
-  pvals = ggm_tmp$Estimate$`p-value`
-  nomi = rownames(ggm_tmp$Estimate)
-  
-  # Assegna 0 se p-value >= 0.05, altrimenti la stima
-  risultati_ggm[i, "k"]  = ifelse(pvals[nomi == "K  "] < 0.05, stime[nomi == "K  "], 0)
-  risultati_ggm[i, "pc"] = ifelse(pvals[nomi == "pc  "] < 0.05, stime[nomi == "pc  "], 0)
-  risultati_ggm[i, "qc"] = ifelse(pvals[nomi == "qc  "] < 0.05, stime[nomi == "qc  "], 0)
-  risultati_ggm[i, "ps"] = ifelse(pvals[nomi == "ps  "] < 0.05, stime[nomi == "ps  "], 0)
-  risultati_ggm[i, "qs"] = ifelse(pvals[nomi == "qs  "] < 0.05, stime[nomi == "qs  "], 0)
-}
-
-risultati_ggm
-
-
-
-
-
-install.packages("prophet")
-# Carica librerie
-library(prophet)
-library(dplyr)
-
-
-date_seq = seq(as.Date("2010-01-01"), as.Date("2019-12-01"), by = "month")
-nrow(dd)
-df_prophet = data.frame(
-  ds = date_seq,
-  y = dd$grigio_80  # Assicurati che la lunghezza corrisponda (132 mesi)
-)
-
-# Stima modello Prophet
-model = prophet(df_prophet)
-
-# Crea future dates per previsioni (es. 24 mesi avanti)
-future = make_future_dataframe(model, periods = 24, freq = "month")
-
-# Previsioni
-forecast = predict(model, future)
-
-# Visualizza risultati
-plot(model, forecast)
-
-# Componenti (trend, stagionalità)
-prophet_plot_components(model, forecast)
-
-# Estrai previsioni per i prossimi 24 mesi
-previsioni = forecast %>%
-  tail(24) %>%
-  select(ds, yhat, yhat_lower, yhat_upper)
-
-print(previsioni)
 
 
