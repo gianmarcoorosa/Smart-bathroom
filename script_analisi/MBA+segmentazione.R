@@ -146,7 +146,7 @@ dati$illuminazione = as.factor(dati$illuminazione)
 dati$dimensione_cm=as.factor(dati$dimensione_cm)
 dati$numero_cassetti=as.factor(dati$numero_cassetti)
 library(cluster)
-
+library(ggplot2)
 set.seed(1234)
 d <- daisy(dati, metric = "gower")
 
@@ -179,8 +179,6 @@ plot(MD.km28, xlab = "number of segments")
 MD.k2 <- MD.km28[["3"]]
 barchart(MD.k2)
 
-head(dat_cl)
-str(dat_cl)
 
 
 cluster_table <- function(var, cluster){
