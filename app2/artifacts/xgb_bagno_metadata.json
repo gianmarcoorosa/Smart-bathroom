@@ -1,0 +1,76 @@
+{
+  "features": [
+    "colore",
+    "dimensione_cm",
+    "type",
+    "lavabo",
+    "numero_cassetti",
+    "ante",
+    "forma_specchiera",
+    "illuminazione"
+  ],
+  "training_columns": [
+    "colore_dark_grey",
+    "colore_light_brown",
+    "colore_light_grey",
+    "colore_oak",
+    "colore_white",
+    "dimensione_cm_120",
+    "dimensione_cm_60",
+    "dimensione_cm_80",
+    "type_sospeso",
+    "lavabo_sovrapposto",
+    "numero_cassetti_1",
+    "numero_cassetti_2",
+    "numero_cassetti_3",
+    "numero_cassetti_4",
+    "ante_yes",
+    "forma_specchiera_round",
+    "illuminazione_illuminazione_esterna",
+    "illuminazione_senza_illuminazione"
+  ],
+  "category_levels": {
+    "colore": [
+      "black",
+      "dark_grey",
+      "light_brown",
+      "light_grey",
+      "oak",
+      "white"
+    ],
+    "dimensione_cm": [
+      "100",
+      "120",
+      "60",
+      "80"
+    ],
+    "type": [
+      "a_terra",
+      "sospeso"
+    ],
+    "lavabo": [
+      "interno",
+      "sovrapposto"
+    ],
+    "numero_cassetti": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "ante": [
+      "no",
+      "yes"
+    ],
+    "forma_specchiera": [
+      "rectangular",
+      "round"
+    ],
+    "illuminazione": [
+      "barra_led",
+      "illuminazione_esterna",
+      "senza_illuminazione"
+    ]
+  }
+}
