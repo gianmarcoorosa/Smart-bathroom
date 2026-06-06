@@ -202,6 +202,7 @@ err_mars=fun.errori(pred_mars>0.5,verifica$y)
   
 ############RANDOM FOREST
 ###fissiamo ntree e ottimizziamo mtry:
+library(randomForest)
 set.seed(123)
 p= ncol(stima) - 1
 mtry_grid= unique(c(1, floor(sqrt(p)), floor(p/3), floor(p/2), p))
