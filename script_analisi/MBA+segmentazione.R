@@ -146,7 +146,7 @@ dati$illuminazione = as.factor(dati$illuminazione)
 dati$dimensione_cm=as.factor(dati$dimensione_cm)
 dati$numero_cassetti=as.factor(dati$numero_cassetti)
 library(cluster)
-library(ggplot2)
+
 set.seed(1234)
 d <- daisy(dati, metric = "gower")
 
