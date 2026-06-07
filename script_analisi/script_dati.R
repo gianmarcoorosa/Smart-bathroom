@@ -251,7 +251,7 @@ for (i in 1:40) {
 }
 
 mse_bass <- mean(errori_bass[1:38]^2)
-
+mse_bass
 
 ## approccio tramite rolling mean
 errori_mean <- numeric(40)
@@ -263,7 +263,7 @@ for (i in 1:40) {
   
 }
 mse_mean <- mean((errori_mean[1:38])^2)
-
+mse_mean
 ## approccio tramite regressione lineare disponendo di alcuni ritardi
 errori_lm <- numeric(38)
 serie <- df$grigio_80
@@ -288,7 +288,7 @@ for (i in 1:38) {
   test  <- dati_lm[dati_lm$tempo == t_pred + 2, ]
   
   modello <- lm( y ~ lag2 + lag3 + lag4 + mean_12 + same_month_last_year,
-    data = train)
+                 data = train)
   
   predizione <- predict(modello, newdata = test)
   errori_lm[i] <- predizione - test$y
@@ -407,8 +407,8 @@ for (i in 1:40) {
   errori_bass[i] <- tail(pred.insttw,1) - df$bianco_60[82 + i]
 }
 
-mse_bass <- mean(errori_bass[1:38]^2)
-
+mse_bass2 <- mean(errori_bass[1:38]^2)
+mse_bass2
 
 ## approccio tramite rolling mean
 errori_mean <- numeric(40)
@@ -419,8 +419,8 @@ for (i in 1:40) {
   errori_mean[i] <- pred_mean - df$noce_120[(80 + i + 2)]
   
 }
-mse_mean <- mean((errori_mean[1:38])^2)
-
+mse_mean2 <- mean((errori_mean[1:38])^2)
+mse_mean2
 ## approccio tramite regressione lineare disponendo di alcuni ritardi
 errori_lm <- numeric(38)
 serie <- df$noce_120
@@ -451,8 +451,8 @@ for (i in 1:38) {
   errori_lm[i] <- predizione - test$y
 }
 
-mse_lm <- mean(errori_lm^2)
-mse_lm
+mse_lm2 <- mean(errori_lm^2)
+mse_lm2
 
 
 ## previsione tramite xgboost
@@ -483,8 +483,8 @@ for (i in 1:38) {
   errori_xgb[i] <- predizione - test$y
 }
 
-mse_xgb <- mean(errori_xgb^2)
-mse_xgb
+mse_xgb2 <- mean(errori_xgb^2)
+mse_xgb2
 
 
 
@@ -526,15 +526,6 @@ for(i in 1:38) {
   errori_prophet[i] <- tail(forecast$yhat, 1) - df$noce_120[n_train + 2]
 }
 
-mse_prophet <- mean(errori_prophet^2)
+mse_prophet2 <- mean(errori_prophet^2)
 
-print(mse_prophet)
-
-
-
-
-
-
-
-
-
+print(mse_prophet2)
