@@ -42,7 +42,7 @@ dati$ante = as.factor(dati$ante)
 dati$forma_specchiera = as.factor(dati$forma_specchiera)
 dati$type = as.factor(dati$type)
 dati$illuminazione = as.factor(dati$illuminazione)
-dati$`DAY-Time`=NULL
+
 str(dati)
 sum(is.na(dati))
 
