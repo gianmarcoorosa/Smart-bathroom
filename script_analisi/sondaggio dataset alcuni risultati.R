@@ -6,7 +6,7 @@
 #5) mars con interazioni fino all'ordine 2
 #6) random forest con ntree fissato e mtry trovato tramite grid search
 #7) PPR
-#8) bagging (con ntree trovato tramite grid search, ma la selezione finale di ntree si è scelta tramite grafico di OOB)
+#8) bagging (con nbagg trovato tramite grid search, ma la selezione finale di nbagg si è scelta tramite grafico di OOB)
 #9) LDA
 #10) xgboost stump no tuning learning rate
 #11) xgboost depth 4 no tuning learning rate
@@ -282,7 +282,7 @@ plot(c(50,100,150,200,250,300,500,600), err[-1], type = "b", lwd = 2,
      xlab = "Numero di alberi", ylab = "Errore OOB",
      main = "Stabilizzazione errore OOB")
 best_alb=which.min(err[-1])
-best_ntree=numero_alberi[best_alb]##numero alberi ottimali 20
+best_ntree=numero_alberi[best_alb]
 abline(v = best_ntree, col = "red", lty = 2)
 
 #errore di classificazione
