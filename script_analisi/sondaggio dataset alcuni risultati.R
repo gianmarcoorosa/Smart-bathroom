@@ -82,6 +82,8 @@ summary(mod_step_forw_glm)
 
 ##lasso logistico
 set.seed(123)
+x.s=model.matrix(y~.,data=stima)
+x.v=model.matrix(y~.,data=verifica)
 mod_lasso_bin=glmnet(x.s[,-1],stima$y,alpha=1,family="binomial")
 plot(mod_lasso_bin,xvar="lambda")
 mod_cv_lasso2=cv.glmnet(x.s[,-1],stima$y,alpha=1,family="binomial")
