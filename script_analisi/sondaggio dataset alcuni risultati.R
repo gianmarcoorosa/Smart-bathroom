@@ -292,7 +292,7 @@ set.seed(123)
 ##NOTA:
 #sarebbe stato nbagg 150 ma non si stabilizzava l'errore 
 #(guardando a occhio il grafico oob abbiamo scelto
-#500 alberi)
+#nbagg 500)
 err_bag = sapply(mbag$mtrees, function(x) {
   pred = predict(x$btree, stima[-x$bindx, ], type = "class")
   mean(pred != stima$y[-x$bindx])
