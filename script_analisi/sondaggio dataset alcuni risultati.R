@@ -194,23 +194,12 @@ legend("topright",
 
 var_imp_best <- randomForest::importance(mod_rf_best)[, 1]  
 names(var_imp_best) <- rownames(randomForest::importance(mod_rf_best))
-#Rappresentiamo un Barplot ordinato
-barplot(
-  var_imp_best[order(var_imp_best, decreasing = TRUE)],
-  las = 2,              # orienta le etichette sull'asse x
-  col = "lightblue",
-  main = "Importanza delle variabili (Random Forest)",
-  horiz = FALSE,
-  cex.names = 0.7     
-)
-
+##rappresentazione grafico importanza
 imp <- sort(var_imp_best, decreasing = TRUE)
 df_imp <- data.frame(
   Variabile = factor(names(imp), levels = names(imp)),
   Importanza = as.numeric(imp)
 )
-
-##rappresentazione con ggplot
 ggplot(df_imp,
        aes(x = Variabile,
            y = Importanza)) +
