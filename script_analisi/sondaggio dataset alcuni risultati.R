@@ -1,3 +1,18 @@
+###QUESTO FILE CONTIENE CODICI PER:
+#1) MODELLO GLM STEPWISE (NO INTERAZ)
+#2) modello glm stepwise con interazioni ordine 2
+#3) lasso logistico
+#4) CART
+#5) mars con interazioni fino all'ordine 2
+#6) random forest con ntree fissato e mtry trovato tramite grid search
+#7) PPR
+#8) bagging (con ntree trovato tramite grid search, ma la selezione finale di ntree si è scelta tramite grafico di OOB)
+#9) LDA
+#10) xgboost stump no tuning learning rate
+#11) xgboost depth 4 no tuning learning rate
+#12) xgboost stump con tuning learning rate
+#13) xgboost depth 4 con tuning learning rate
+
 rm(list=ls())
 #install.packages("readODS")
 library(readODS)
