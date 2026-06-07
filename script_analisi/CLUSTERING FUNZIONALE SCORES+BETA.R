@@ -38,16 +38,12 @@ plot(pca$scores,col="blue",pch=16)
 par(mfrow=c(1,2))
 plot(pca)
 
-
-
 grid_eval=seq(1, 120, length.out = 500)
 f_mean=eval.fd(grid_eval,mean.fd(y_smooth$fd))
 plot(grid_eval, f_mean, type="l")
 f_harmonics=eval.fd(grid_eval,pca$harmonics)
 head(f_harmonics)
 head(pca$harmonics$coefs)
-
-
 
 matplot(f_harmonics, type="l")
 ##se devo costruirle
@@ -56,7 +52,6 @@ pca$scores[1,]
 #scores più alti incrementi delle vendite
 pca$harmonics$coefs
 pca$scores
-#dal grafico 
 #scores negativi ci sono declini nelle vendite
 plot(pca$harmonics)
 
@@ -64,13 +59,12 @@ plot(pca$harmonics)
 x1_rec=f_mean+pca$scores[1,1]*f_harmonics[,1]+pca$scores[1,2]*f_harmonics[,2]
 f_origin=eval.fd(grid_eval,y_smooth$fd)##funzione valutata sulla griglia
 par(mfrow=c(1,1))
+##si può vedere quanto bene la prima pca ha approssimato bene tra 
+#f origin valutata sulla griglia e quella costruita con le pca
 plot(grid_eval, f_origin[,1],type="l")
 lines(grid_eval, x1_rec,col=2,type="l")
-##quindi vediamo quanto bene la prima pca ha approssimato bene tra 
-#f origin valutata sulla griglia e quella costruita con le pca
 
 
-colnames(dat)
 scores <- pca$scores
 #faccio cluster sugli scores delle componenti principali
 km <- kmeans(scores, centers = 3)
@@ -80,27 +74,20 @@ plot(scores, col = km$cluster, pch = 16)
 text(scores,labels=colnames(dat),pos=4,cex=0.7)
 
 
-
-
-# scores PCA
+#scores f-PCA
 scores <- as.data.frame(pca$scores)
 colnames(scores) <- c("PC1","PC2")
-
-# nomi serie
+#nomi serie
 scores$serie <- colnames(dat)
-
-# etichette solo con 60/80/100/120
+#etichette 60/80/100/120
 scores$label <- sub(".*_", "", scores$serie)
-
-# colori per materiale
+#colori per materiale
 scores$gruppo <- case_when(
   grepl("antracite", scores$serie) ~ "Antracite",
   grepl("grigio", scores$serie) ~ "Grigio",
   grepl("noce", scores$serie) ~ "Noce",
   grepl("bianco", scores$serie) ~ "Bianco"
 )
-
-# palette colori
 cols <- c(
   "Grigio" = "grey50",
   "Bianco" = "grey85",
@@ -109,17 +96,13 @@ cols <- c(
 )
 
 library(ggplot2)
-
 ggplot(scores, aes(x = PC1, y = PC2, color = gruppo)) +
   
-  # linee tratteggiate sugli assi
   geom_hline(yintercept = 0, linetype = "dashed", color = "grey60") +
   geom_vline(xintercept = 0, linetype = "dashed", color = "grey60") +
   
-  # punti
   geom_point(size = 4) +
   
-  # etichette 60/80/100/120
   geom_text(aes(label = label),
             vjust = -1,
             size = 5) +
@@ -140,23 +123,16 @@ ggplot(scores, aes(x = PC1, y = PC2, color = gruppo)) +
 
 #####CLUSTERING FUNZIONALE SUI COEFFICIENTI FUNZIONALI
 beta <- t(y_smooth$fd$coefs)
-
-# clustering
+# clustering sui Beta
 km_beta <- kmeans(beta, centers = 3)
-
-# dataframe
 beta_df <- as.data.frame(beta)
-
-# rinomina primi due coefficienti
+#rinominiamo primi due coefficienti
 colnames(beta_df)[1:2] <- c("Beta1", "Beta2")
-
-# nomi serie
+#nomi serie
 beta_df$serie <- colnames(dat)
-
-# etichette 60/80/100/120
+#etichette 60/80/100/120
 beta_df$label <- sub(".*_", "", beta_df$serie)
 
-# gruppi colore
 beta_df$gruppo <- case_when(
   grepl("antracite", beta_df$serie) ~ "Antracite",
   grepl("grigio", beta_df$serie) ~ "Grigio",
@@ -164,20 +140,14 @@ beta_df$gruppo <- case_when(
   grepl("bianco", beta_df$serie) ~ "Bianco"
 )
 
-# cluster
 beta_df$cluster <- factor(km_beta$cluster)
 
-# palette
 cols <- c(
   "Grigio" = "grey50",
   "Bianco" = "grey85",
   "Antracite" = "black",
   "Noce" = "firebrick4"
 )
-
-# =========================
-# GRAFICO
-# =========================
 
 ggplot(beta_df,
        aes(x = Beta1,
