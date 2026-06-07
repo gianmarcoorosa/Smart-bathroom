@@ -1,4 +1,4 @@
-##QUESTO FILE CONTIENE CODICI PER:
+##QUESTO SCRIPT CONTIENE CODICI PER:
 #1) approccio dati funzionali clustering sugli scores delle componenti principali funzionali
 #2) approccio dati funzionali clustering sui coefficienti 
 
