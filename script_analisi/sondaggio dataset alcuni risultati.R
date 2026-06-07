@@ -18,7 +18,6 @@
 rm(list=ls())
 #install.packages("readODS")
 library(readODS)
-library(glmnet)
 
 dati <- read_ods("sondaggio_mobili_bagno.ods")
 head(dati)
@@ -102,6 +101,7 @@ summary(mod_step_forw_glm)
 set.seed(123)
 x.s=model.matrix(y~.,data=stima)
 x.v=model.matrix(y~.,data=verifica)
+library(glmnet)
 mod_lasso_bin=glmnet(x.s[,-1],stima$y,alpha=1,family="binomial")
 plot(mod_lasso_bin,xvar="lambda")
 mod_cv_lasso2=cv.glmnet(x.s[,-1],stima$y,alpha=1,family="binomial")
@@ -170,7 +170,7 @@ lift.roc(pred_mars,verifica$y)
 err_mars=fun.errori(pred_mars>0.5,verifica$y)
 
 
-  
+
 ############RANDOM FOREST
 ###fissiamo ntree e ottimizziamo mtry:
 library(randomForest)
@@ -218,6 +218,7 @@ df_imp <- data.frame(
   Variabile = factor(names(imp), levels = names(imp)),
   Importanza = as.numeric(imp)
 )
+library(ggplot2)
 ggplot(df_imp,
        aes(x = Variabile,
            y = Importanza)) +
@@ -402,6 +403,8 @@ df_plot <- data.frame(
   shrink = err_test_learn,
   learn4=err_test_learn4
 )
+library(dplyr)
+library(tidyr)
 df_long <- df_plot %>%
   pivot_longer(cols = -trees,
                names_to = "modello",
@@ -471,7 +474,7 @@ err_gbm_learn4 <- fun.errori(pred_fin_learn4>0.5, verifica$y)
 
 
 ###PDP PER XGBOOST CON DEPTH 4 NO TUNING LEARNING RATE
-library(ggplot2)
+library(pdp)
 ##PDP colore
 pd_col <- partial(
   object = mod_gbm4,
@@ -544,4 +547,3 @@ ggplot(pd_col, aes(x = illuminazione, y = yhat)) +
     y = "Probabilità stimata"
   ) +
   theme_minimal(base_size = 13)
-
