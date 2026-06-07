@@ -4,7 +4,8 @@
 # 2) clustering basato sui coefficienti di bass e GBM
 # 3) clustering basato su coefficienti splines di regressione
 # 4) clustering veloce fda (meglio Giorgia)
-# 5) Confronto tramite expanding windows modelli in previsione
+# 5) Confronto tramite expanding windows modelli in previsione. 
+# NELLA PRESENTAZIONE SI RIPORTANO SOLO I RISULTATI DELLA PRIMA SERIE DEL PUNTO 5.
 
 
 
