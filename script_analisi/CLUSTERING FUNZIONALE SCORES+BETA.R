@@ -1,6 +1,8 @@
+##QUESTO FILE CONTIENE CODICI PER:
+#1) approccio dati funzionali clustering sugli scores delle componenti principali funzionali
+#2) approccio dati funzionali clustering sui coefficienti 
+
 rm(list=ls())
-
-
 ####CLUSTERING SU SCORES F-PCA
 dati=read_excel("ss_ide3_sist.xlsx")
 dim(dati)
