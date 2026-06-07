@@ -1,6 +1,6 @@
 # Smart Bathroom
 
-Repository condiviso per il progetto **Smart Bathroom**.
+Repository condiviso per il progetto **Smart Bathroom** relativo al corso SSDA.
 
 Il progetto raccoglie:
 - la webapp Streamlit per il configuratore bagno
