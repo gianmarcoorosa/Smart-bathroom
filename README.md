@@ -18,7 +18,7 @@ Il progetto raccoglie:
 La versione attuale della webapp si trova in:
 
 ```bash
-app2/app_streamlit.py
+app2/app_streamlit.py```
 Per avviarla in locale:
 
 cd "C:\Users\Utente\Documents\New project 3"
