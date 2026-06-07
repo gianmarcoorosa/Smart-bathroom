@@ -19,7 +19,7 @@ library(tidyr)
 library(prophet)
 
 
-dd=read_xlsx("C:/Users/Utente/Downloads/ss_ide3_sist.xlsx")
+dd=read_xlsx("ss_ide3_sist.xlsx")
 head(dd)
 dd=data.frame(dd)
 head(dd)
