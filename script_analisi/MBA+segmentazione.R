@@ -1,3 +1,9 @@
+###QUESTO FILE CONTIENE CODICI PER:
+#1) MBA analysis
+#2) segmentazione mercato tramite cluster gerarchico
+#3) segmentazione mercato tramite k-medie
+
+
 #####MARKET BASKET ANALYSIS
 rm(list=ls())
 #install.packages("readODS")
