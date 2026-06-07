@@ -276,9 +276,6 @@ set.seed(123)
 #sarebbe stato nbagg 150 ma non si stabilizzava l'errore 
 #(guardando a occhio il grafico oob abbiamo scelto
 #500 alberi)
-mbag = bagging(factor(y) ~ ., data = stima,
-               nbagg = 500, coob = TRUE)
-
 err_bag = sapply(mbag$mtrees, function(x) {
   pred = predict(x$btree, stima[-x$bindx, ], type = "class")
   mean(pred != stima$y[-x$bindx])
@@ -287,7 +284,9 @@ err_cumulativa = cumsum(err_bag) / seq_along(err_bag)
 plot(err_cumulativa, type = "l", lwd = 2,
      xlab = "Numero di alberi", ylab = "Errore medio cumulativo",
      main = "Evoluzione errore medio (OOB)")
-
+##si usa quindi nbagg pari a 500
+mbag = bagging(factor(y) ~ ., data = stima,
+               nbagg = 500, coob = TRUE)
 pbagg1 = predict(mbag, verifica, type = "prob")[, 2]
 err_bagging=tabella.sommario(pbagg1>0.5,verifica$y)
 lift.roc(pbagg1,verifica$y)
