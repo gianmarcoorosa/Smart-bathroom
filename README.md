@@ -17,23 +17,19 @@ Il progetto raccoglie:
 
 La versione attuale della webapp si trova in:
 
-```bash
-app2/app_streamlit.py```
-Per avviarla in locale:
 
-cd "C:\Users\Utente\Documents\New project 3"
+app2/app_streamlit.py
+Per avviarla in locale spostarsi nella cartella utilizzata ed eseguire:
 streamlit run app2/app_streamlit.py
 
-Dipendenze Python
-Le librerie necessarie sono elencate in:
 
+Le librerie necessarie sono elencate in:
 app2/requirements.txt
 Per installarle:
-
 pip install -r app2/requirements.txt
 
 
-Analisi in R
+## Analisi in R
 La cartella script_analisi/ contiene gli script usati per:
 
 analisi esplorativa
