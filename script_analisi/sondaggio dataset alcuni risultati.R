@@ -190,11 +190,10 @@ legend("topright",
        legend = c("Errore OOB", "Classe 0", "Classe 1"),
        col = c(1, 2, 3),
        lty = 1, lwd = 2)
-importance(mod_rf_best)      
-varImpPlot(mod_rf_best) 
 
-var_imp_best <- importance(mod_rf_best)[, 1]  
-names(var_imp_best) <- rownames(importance(mod_rf_best))
+
+var_imp_best <- randomForest::importance(mod_rf_best)[, 1]  
+names(var_imp_best) <- rownames(randomForest::importance(mod_rf_best))
 #Rappresentiamo un Barplot ordinato
 barplot(
   var_imp_best[order(var_imp_best, decreasing = TRUE)],
