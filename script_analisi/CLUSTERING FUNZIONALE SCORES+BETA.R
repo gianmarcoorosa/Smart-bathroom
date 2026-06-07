@@ -4,6 +4,7 @@
 
 rm(list=ls())
 ####CLUSTERING SU SCORES F-PCA
+library(readxl)
 dati=read_excel("ss_ide3_sist.xlsx")
 dim(dati)
 str(dati)
@@ -84,6 +85,7 @@ scores$serie <- colnames(dat)
 #etichette 60/80/100/120
 scores$label <- sub(".*_", "", scores$serie)
 #colori per materiale
+library(dplyr)
 scores$gruppo <- case_when(
   grepl("antracite", scores$serie) ~ "Antracite",
   grepl("grigio", scores$serie) ~ "Grigio",
@@ -134,7 +136,7 @@ colnames(beta_df)[1:2] <- c("Beta1", "Beta2")
 beta_df$serie <- colnames(dat)
 #etichette 60/80/100/120
 beta_df$label <- sub(".*_", "", beta_df$serie)
-
+library(dplyr)
 beta_df$gruppo <- case_when(
   grepl("antracite", beta_df$serie) ~ "Antracite",
   grepl("grigio", beta_df$serie) ~ "Grigio",
