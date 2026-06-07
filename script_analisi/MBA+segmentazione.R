@@ -1,4 +1,4 @@
-###QUESTO FILE CONTIENE CODICI PER:
+###QUESTO SCRIPT CONTIENE CODICI PER:
 #1) MBA analysis
 #2) segmentazione mercato tramite cluster gerarchico
 #3) segmentazione mercato tramite k-medie
