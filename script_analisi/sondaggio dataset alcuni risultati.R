@@ -18,6 +18,7 @@
 rm(list=ls())
 #install.packages("readODS")
 library(readODS)
+library(glmnet)
 
 dati <- read_ods("sondaggio_mobili_bagno.ods")
 head(dati)
