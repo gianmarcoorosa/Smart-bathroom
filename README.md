@@ -34,4 +34,4 @@ La cartella script_analisi/ contiene gli script usati per:
 
 analisi esplorativa, clustering, modello e risultati sui dati del sondaggio.
 
-Il dataset "ss_ide3_sist.xlsx" contiene le serie storiche relative alle vendite mensili, mentre il dataset "sondaggio_mobili_bagno.csv" integra i risultati al sondaggio forniti dall'azienda con una serie di features inserite a mano da noi tramite le foto.
+Il dataset "ss_ide3_sist.xlsx" contiene le serie storiche relative alle vendite mensili, mentre il dataset "sondaggio_mobili_bagno.ODS" integra i risultati al sondaggio forniti dall'azienda con una serie di features inserite a mano da noi tramite le foto.
