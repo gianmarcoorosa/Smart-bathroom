@@ -11,7 +11,7 @@ Il progetto raccoglie:
 
 - `app2/`: versione corrente della webapp
 - `script_analisi/`: script R usati per analisi e risultati
-- `sondaggio_mobili_bagno.csv`: dataset usato dalla webapp
+- `sondaggio_mobili_bagno.ODS`: dataset usato dalla webapp
 
 ## Webapp
 
