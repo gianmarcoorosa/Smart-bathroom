@@ -4,7 +4,7 @@ Repository condiviso per il progetto **Smart Bathroom** relativo al corso SSDA.
 
 Il progetto raccoglie:
 - la webapp Streamlit per il configuratore bagno
-- gli script R per analisi dati clustering 
+- gli script R per analisi dati e clustering 
 - gli asset grafici e gli artifact 
 
 ## Struttura del progetto
