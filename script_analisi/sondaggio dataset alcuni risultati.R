@@ -13,6 +13,8 @@
 #12) xgboost stump con tuning learning rate
 #13) xgboost depth 4 con tuning learning rate
 
+##si includono rappresentazioni grafiche interessanti relative a grafici importanza RF, pdp di xgboost
+
 rm(list=ls())
 #install.packages("readODS")
 library(readODS)
