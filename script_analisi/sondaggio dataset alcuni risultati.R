@@ -1,4 +1,4 @@
-###QUESTO FILE CONTIENE CODICI PER:
+###QUESTO SCRIPT CONTIENE CODICI PER:
 #1) MODELLO GLM STEPWISE (NO INTERAZ)
 #2) modello glm stepwise con interazioni ordine 2
 #3) lasso logistico
