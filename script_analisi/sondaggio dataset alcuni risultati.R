@@ -323,7 +323,7 @@ pr_lda=predict(m_lda,verifica)
 pr_lda$class
 table(pr_lda$class, verifica$y)
 pr_lda$posterior[,2]
-err_lda=fun.errori(pr_lda$posterior[,2]>0.5,verifica$y)##mi esce NaN, te sai perchè? la tabella sommario
+err_lda=fun.errori(pr_lda$posterior[,2]>0.5,verifica$y)
 #funziona invece
 lift.roc(pr_lda$class,verifica$y)
 
